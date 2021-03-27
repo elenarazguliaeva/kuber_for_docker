@@ -30,7 +30,6 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry(registryUrl, registryCredentialSet) {
-                        app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
                 }                

@@ -4,7 +4,7 @@ pipeline {
     environment {
       imageName = 'elenarazguliaeva/jenkins'
       registryCredentialSet = 'docker-hub-credentials'
-      registryUrl = 'https://hub.docker.com'
+      registryUrl = 'https://registry.hub.docker.com'
     }
     
     stages {   
@@ -29,7 +29,7 @@ pipeline {
         stage('Push image') {           
             steps {
                 script {
-                    docker.withServer(registryUrl, registryCredentialSet) {
+                    docker.withRegistry(registryUrl, registryCredentialSet) {
                         app.push("latest")
                     }
                 }                

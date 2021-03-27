@@ -4,7 +4,7 @@ pipeline {
     environment {
       imageName = 'elenarazguliaeva/jenkins'
       registryCredentialSet = 'docker-hub-credentials'
-      registryUrl = 'https://hub.docker.com'
+      registryUrl = ''
     }
     
     stages {   

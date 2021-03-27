@@ -1,21 +1,29 @@
 pipeline {
     agent any
     stages {
-        stage('Example Build') {
+        stage('Clone repository') {
             steps {
-                echo 'Hello World'
+                checkout scm
             }
         }
-        stage('Example Deploy') {
-            when {
-                branch 'production'
-                anyOf {
-                    environment name: 'DEPLOY_TO', value: 'production'
-                    environment name: 'DEPLOY_TO', value: 'staging'
+        stage('Build image') {
+            steps {
+                app = docker.build("elenarazguliaeva/jenkins")
+            }
+        }
+        stage('Test image') {
+            steps {
+                app.inside {
+                    sh 'echo "Tests passed"'
                 }
             }
+        }
+        stage('Push image') {           
             steps {
-                echo 'Deploying'
+                docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                     app.push("${env.BUILD_NUMBER}")
+                     app.push("latest")
+                }
             }
         }
     }

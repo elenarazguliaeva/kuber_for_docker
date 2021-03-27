@@ -1,6 +1,11 @@
-def app
 pipeline {
     agent any
+    
+    environment {
+      imageName = 'elenarazguliaeva/jenkins'
+      registryCredentialSet = 'docker-hub-credentials'
+      registryUrl = 'https://registry.hub.docker.com'
+    }
     
     stages {        
         stage('Clone repository') {
@@ -10,19 +15,24 @@ pipeline {
         }
         stage('Build image') {
             steps {
-                app = docker.build("elenarazguliaeva/jenkins")
+                script {
+                    app = docker.build(imageName)
+                }                
             }
         }
         stage('Test image') {
             steps {
-                app.inside {
-                    sh 'echo "Tests passed"'
+                script {
+                    app.inside {
+                        sh 'echo "Tests passed"'
+                    }
                 }
+
             }
         }
         stage('Push image') {           
             steps {
-                docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                docker.withRegistry(registryUrl, registryCredentialSet) {
                      app.push("${env.BUILD_NUMBER}")
                      app.push("latest")
                 }

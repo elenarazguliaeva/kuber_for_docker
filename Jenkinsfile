@@ -32,10 +32,12 @@ pipeline {
         }
         stage('Push image') {           
             steps {
-                docker.withRegistry(registryUrl, registryCredentialSet) {
-                     app.push("${env.BUILD_NUMBER}")
-                     app.push("latest")
-                }
+                script {
+                    docker.withRegistry(registryUrl, registryCredentialSet) {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }                
             }
         }
     }

@@ -4,7 +4,7 @@ pipeline {
     environment {
       imageName = 'elenarazguliaeva/jenkins'
       registryCredentialSet = 'docker-hub-credentials'
-      registryUrl = 'https://registry.hub.docker.com'
+      registryUrl = 'https://registry-1.docker.io/v2/'
     }
     
     stages {   
@@ -15,21 +15,11 @@ pipeline {
                     app = docker.build(imageName)
                 }                
             }
-        }
-        stage('Test image') {
-            steps {
-                script {
-                    app.inside {
-                        sh 'echo "Tests passed"'
-                    }
-                }
-
-            }
-        }
+        }       
         stage('Push image') {           
             steps {
                 script {
-                    docker.withRegistry('https://registry-1.docker.io/v2/', 'docker-hub-credentials') {
+                    docker.withRegistry(registryUrl, registryCredentialSet) {
                         app.push()
                     }
                 }                

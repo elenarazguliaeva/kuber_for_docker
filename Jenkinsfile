@@ -29,7 +29,7 @@ pipeline {
         stage('Push image') {           
             steps {
                 script {
-                    docker.withRegistry(registryUrl) {
+                    docker.withRegistry(registryUrl, registryCredentialSet) {
                         app.push("latest")
                     }
                 }                

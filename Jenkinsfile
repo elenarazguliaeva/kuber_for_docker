@@ -7,12 +7,8 @@ pipeline {
       registryUrl = 'https://registry.hub.docker.com'
     }
     
-    stages {        
-        stage('Clone repository') {
-            steps {
-                checkout scm
-            }
-        }
+    stages {   
+
         stage('Build image') {
             steps {
                 script {

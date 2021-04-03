@@ -19,9 +19,12 @@ pipeline {
         stage('Push image') {           
             steps {
                 script {
-                    docker.withRegistry(registryUrl, registryCredentialSet) {
-                        app.push()
-                    }
+                    withCredentials([usernamePassword( credentialsId: 'docker-hub-credentials', usernameVariable: 'USER', passwordVariable: 'PASSWORD')]) {
+                        
+                        sh "docker login -u $USER -p $PASSWORD ${registryUrl}"                        
+                        docker.withRegistry(registryUrl, registryCredentialSet) {
+                            app.push()
+                        }
                 }                
             }
         }

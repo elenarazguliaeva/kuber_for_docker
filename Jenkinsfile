@@ -28,7 +28,7 @@ pipeline {
         stage('Deploy App') {
             steps {
                 script {
-                    kubernetesDeploy(configs: "deploy.yml", kubeconfigId: "configfile")
+                    kubernetesDeploy(configs: "deploy.yml", kubeconfigId: "amazing-zephyr-304415")
                 }
             }
        }
